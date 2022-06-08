@@ -1,20 +1,18 @@
 const express = require("express");
-const cors = require("cors");
 const app = express();
+const bodyParser = require('body-parser');
+const cors = require("cors");
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
-app.use(require('./src/routes/routes'));
+app.use('/api/v1', require('./src/routes/routes'));
 
 app.listen(process.env.PORT || 3000, err => {
     if(err) {
         console.log("Error: " , err);
-        return;    
+        return;
     }
 
     console.log("Running...");
-});
-
-app.get('/', async (req, res) => {
-    res.send("<marquee><h1> There's nothing around here! </h1></marquee>");
-
 });

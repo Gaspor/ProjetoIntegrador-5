@@ -7,7 +7,6 @@ let refreshTokens = [];
 
 app.get('/logged', authenticateToken, async (req, res) => {
     try {
-        console.log(req.cookies);
         const users = await query('SELECT * FROM account');
         res.json({ users: users.rows });
 

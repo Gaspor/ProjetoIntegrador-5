@@ -1,14 +1,31 @@
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { jwtTokens } = require("./../../config/jwt");
 const { query } = require("./../../config/connection");
 
 app.post('/login', async (req, res) => {
     try {
-        const user = await query(`SELECT password FROM account WHERE email=$1;`, [req.body.email]);
-        const encryptedPassword = user.rows[0].password;
+        const { email, password } = req.body;
+        const user = await query(`SELECT password FROM account WHERE email=$1;`, [email]);
         
-        res.status(200).json(await bcrypt.compare(req.body.password, encryptedPassword));
+        if (user.rows.length === 0) {
+            return res.status(401).json({ error: "Email is incorrect!" });
+
+        }
+
+        const encryptedPassword = user.rows[0].password;
+        const validPassword = await bcrypt.compare(password, encryptedPassword);
+        
+        if (!validPassword) {
+            return res.status(401).json({ error: "Password is incorrect!" });
+
+        }
+
+        const tokens = jwtTokens(user.rows[0]);
+        res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
+        res.status(200).json(tokens);
 
     } catch (error) {
         res.status(500).json({ error: error.message });

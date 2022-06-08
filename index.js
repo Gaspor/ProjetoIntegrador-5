@@ -1,7 +1,7 @@
 const express = require("express");
+const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
-const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -15,9 +15,4 @@ app.listen(process.env.PORT || 3000, err => {
     }
 
     console.log("Running...");
-});
-
-app.get('/', async (req, res) => {
-    res.send("<marquee><h1> There's nothing around here! </h1></marquee>");
-
 });

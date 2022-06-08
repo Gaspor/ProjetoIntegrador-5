@@ -1,7 +1,8 @@
 const express = require('express');
 const apiRouter = express();
 
-apiRouter.use('/user', require("./login/login"));
-apiRouter.use('/user', require("./register/register"));
+apiRouter.use('/api/user', require("./login/login"));
+apiRouter.use('/api/user', require("./register/register"));
+apiRouter.use('/api/user', require("./user/user"));
 
 module.exports = apiRouter;

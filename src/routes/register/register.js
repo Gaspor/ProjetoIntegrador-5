@@ -11,7 +11,8 @@ app.post('/register', async (req, res) => {
             [req.body.username, hashedPassword, req.body.email, req.body.cargo]
         );
         
-        res.json({ message: "success" });
+        res.status(201).json({ message: "success" });
+
     } catch (error) {
         res.status(500).json({ error: error.message });
 

@@ -20,6 +20,7 @@ async function connect() {
     const client = await pool.connect();
     console.log("Criou pool de conexões no PostgreSQL!");
 
+    await client.query("SET TIMEZONE TO 'America/Sao_Paulo';");
     const res = await client.query('SELECT NOW()');
     console.log(res.rows[0]);
     client.release();

@@ -10,7 +10,7 @@ app.post('/login', async (req, res) => {
         const user = await query(`SELECT password FROM account WHERE email=$1;`, [email]);
         
         if (user.rows.length === 0) {
-            return res.status(401).json({ error: "Email is incorrect!" });
+            return res.status(401).json({ error: "Email/Password is incorrect!" });
 
         }
 
@@ -18,7 +18,7 @@ app.post('/login', async (req, res) => {
         const validPassword = await bcrypt.compare(password, encryptedPassword);
         
         if (!validPassword) {
-            return res.status(401).json({ error: "Password is incorrect!" });
+            return res.status(401).json({ error: "Email/Password is incorrect!" });
 
         }
 

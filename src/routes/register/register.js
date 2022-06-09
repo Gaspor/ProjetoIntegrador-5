@@ -8,9 +8,18 @@ app.post('/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const newUser = await query(
-            "INSERT INTO account (username, password, email, cargo, createdat, updatedat) VALUES ($1, $2, $3, $4, now(), now()) RETURNING *",
-            [req.body.username, hashedPassword, req.body.email, req.body.cargo]
+            "INSERT INTO account(username, password, email, createdat, updatedat) VALUES ($1, $2, $3, now(), now()) RETURNING *",
+            [req.body.username, hashedPassword, req.body.email]
         );
+
+        const cargo = req.body.cargo;
+        if (cargo?.toLowerCase() == "professor") {
+            await query("INSERT INTO professor(idprofessor, createdat, updatedat) VALUES ($1, now(), now())", [newUser.rows[0].id]);
+
+        } else {
+            await query("INSERT INTO aluno(idaluno, createdat, updatedat) VALUES ($1, now(), now())", [newUser.rows[0].id]);
+
+        }
         
         res.status(201).json(jwtTokens(newUser.rows[0]));
 

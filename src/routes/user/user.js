@@ -7,8 +7,7 @@ let refreshTokens = [];
 
 app.get('/logged', authenticateToken, async (req, res) => {
     try {
-        const users = await query('SELECT * FROM account');
-        res.json({ users: users.rows });
+        res.json({ message: "Success!" });
 
     } catch (error) {
         res.status(500).json({ error: error.message });

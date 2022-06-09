@@ -7,7 +7,7 @@ const { query } = require("./../../config/connection");
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await query(`SELECT password FROM account WHERE email=$1;`, [email]);
+        const user = await query(`SELECT * FROM account WHERE email=$1;`, [email]);
         
         if (user.rows.length === 0) {
             return res.status(401).json({ error: "Email/Password is incorrect!" });

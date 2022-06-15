@@ -14,7 +14,7 @@ app.get('/refresh_token', async (req, res) => {
 
         jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
             if (error) {
-                return res.status(403).json({error:error.message});
+                return res.status(403).json({ error: error.message });
             
             }
 

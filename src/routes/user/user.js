@@ -5,7 +5,7 @@ const { authenticateToken } = require("./../../middleware/auth");
 
 let refreshTokens = [];
 
-app.get('/logged', authenticateToken, async (req, res) => {
+app.get('/dashboard', authenticateToken, async (req, res) => {
     try {
         res.json({ message: "Success!" });
 

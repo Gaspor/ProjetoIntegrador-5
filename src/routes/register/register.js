@@ -15,9 +15,11 @@ app.post('/register', async (req, res) => {
         const cargo = req.body.cargo;
         if (cargo?.toLowerCase() == "professor") {
             await query("INSERT INTO professor(idprofessor, createdat, updatedat) VALUES ($1, now(), now())", [newUser.rows[0].id]);
+            newUser.rows[0].cargo = "Professor";
 
         } else {
             await query("INSERT INTO aluno(idaluno, createdat, updatedat) VALUES ($1, now(), now())", [newUser.rows[0].id]);
+            newUser.rows[0].cargo = "Aluno";
 
         }
         

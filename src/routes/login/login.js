@@ -22,7 +22,19 @@ app.post('/login', async (req, res) => {
 
         }
 
-        const tokens = jwtTokens(user.rows[0]);
+        const userData = user.rows[0];
+        const cargo = await query(`SELECT * FROM professor WHERE idprofessor=$1;`, [userData.id]);
+        const cargoAluno = await query(`SELECT * FROM aluno WHERE idaluno=$1;`, [userData.id]);
+
+        if (cargo.rows[0]) {
+            userData.cargo = "Professor";
+
+        } if (cargoAluno.rows[0]) {
+            userData.cargo = "Aluno";
+
+        }
+
+        const tokens = jwtTokens(userData);
         res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
         res.status(200).json(tokens);
 

@@ -6,7 +6,9 @@ const { decodeUser } = require("./../../config/decodeJWT");
 
 app.get("/getalternativa", authenticateToken, async (req, res) => {
     try {
+        const alternativas = await query("SELECT * FROM alternativa WHERE idquestao=$1", [req.body.idquestao]);
 
+        return res.json({ error: false, message: "Alternativas dessa questão", alternativas: alternativas.rows });
 
 
     } catch (error) {

@@ -42,7 +42,6 @@ app.post("/alternativa", authenticateToken, async (req, res) => {
 
         return res.json({ error: true, message: "Aconteceu um erro, tente novamente mais tarde"});
 
-
     } catch (error) {
         res.status(500).json({ error: true, message: error.message });
 

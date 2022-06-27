@@ -34,15 +34,15 @@ app.post("/questao", authenticateToken, async (req, res) => {
     }
 });
 
-app.post("/responderquestao", async (req, res) => {
+app.post("/responderquestao", authenticateToken, async (req, res) => {
     try {
-        //const user = decodeUser(req);
+        const user = decodeUser(req);
 
-        //if (user.cargo == "Aluno") {
-        await query("INSERT INTO questao_aluno(idaluno, idquestao, idalternativa, createdat, updatedat) VALUES($1, $2, $3, now(), now())", [req.body.idaluno, req.body.idquestao, req.body.idalternativa]);
-        return res.json({ error: false, message: "Questão respondida com sucesso" });
+        if (user.cargo == "Aluno") {
+            await query("INSERT INTO questao_aluno(idaluno, idquestao, idalternativa, createdat, updatedat) VALUES($1, $2, $3, now(), now())", [req.body.idaluno, req.body.idquestao, req.body.idalternativa]);
+            return res.json({ error: false, message: "Questão respondida com sucesso" });
 
-        //}
+        }
 
         return res.json({ error: true, message: "Professor não pode responder a questão" });
 
@@ -52,26 +52,25 @@ app.post("/responderquestao", async (req, res) => {
     }
 });
 
-app.get("/acertos", async (req, res) => {
+app.get("/acertos", authenticateToken, async (req, res) => {
     try {
-        //const user = decodeUser(req);
+        const user = decodeUser(req);
 
-        //if (user.cargo == "Aluno") {
-        const questionario = await query("SELECT * FROM questionario WHERE id=$1", [req.body.idquestionario]);
-        const questoes = await query("SELECT * FROM questao WHERE idquestionario=$1", [questionario.rows[0].id]);
-        let corretas = 0;
-        questoes.rows.forEach(async element => {
-            const questoesRespondidas = await query("SELECT * FROM questao_aluno WHERE idquestao=$1 AND idaluno=$2", [element.id, req.body.idaluno]);
-            questoesRespondidas.rows.forEach(async element => {
-                await countAlternativas(element, corretas);
-                return res.json({ error: false, message: "Questões corretas: " + corretas });
+        if (user.cargo == "Aluno") {
+            const questionario = await query("SELECT * FROM questionario WHERE id=$1", [req.body.idquestionario]);
+            const questoes = await query("SELECT * FROM questao WHERE idquestionario=$1", [questionario.rows[0].id]);
+            let corretas = 0;
+            questoes.rows.forEach(async element => {
+                const questoesRespondidas = await query("SELECT * FROM questao_aluno WHERE idquestao=$1 AND idaluno=$2", [element.id, req.body.idaluno]);
+                questoesRespondidas.rows.forEach(async element => {
+                    await countAlternativas(element, corretas);
+                    return res.json({ error: false, message: "Questões corretas: " + corretas });
+
+                });
             });
-        });
+        }
 
-
-        //}
-
-        //return res.json({ error: true, message: "Professor não tem questões para serem verificadas" });
+        return res.json({ error: true, message: "Professor não tem questões para serem verificadas" });
 
     } catch (error) {
         return res.status(500).json({ error: true, message: error.message });
@@ -85,10 +84,12 @@ async function countAlternativas(element, corretas) {
         const element = alternativa.rows[index];
         if (element.correta) {
             corretas++;
-        
+
         }
     }
+
     return corretas;
+    
 }
 
 

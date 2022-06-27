@@ -23,10 +23,10 @@ app.post('/register', async (req, res) => {
 
         }
         
-        res.status(201).json(jwtTokens(newUser.rows[0]));
+        return res.status(201).json(jwtTokens(newUser.rows[0]));
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: true, message: error.message });
 
     }
 });

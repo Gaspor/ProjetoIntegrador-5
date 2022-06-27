@@ -3,14 +3,12 @@ const app = express();
 const { query } = require("./../../config/connection");
 const { authenticateToken } = require("./../../middleware/auth");
 
-let refreshTokens = [];
-
 app.get('/dashboard', authenticateToken, async (req, res) => {
     try {
-        res.json({ message: "Success!" });
+        return res.json({ message: "Success!" });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: true, message: error.message });
     }
 });
 

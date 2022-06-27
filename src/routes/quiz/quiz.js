@@ -4,7 +4,7 @@ const { query } = require("./../../config/connection");
 const { authenticateToken } = require("./../../middleware/auth");
 const { decodeUser } = require("./../../config/decodeJWT");
 
-app.get("/getquiz", authenticateToken, async (req, res) => {
+app.get("/quiz", authenticateToken, async (req, res) => {
     try {
         const questionarios = await query("SELECT id, titulo, status FROM questionario WHERE professor=$1", [req.body.idprofessor]);
 
@@ -16,7 +16,7 @@ app.get("/getquiz", authenticateToken, async (req, res) => {
     }
 });
 
-app.post('/makequiz', authenticateToken, async (req, res) => {
+app.post('/quiz', authenticateToken, async (req, res) => {
     try {
         const user = decodeUser(req);
 
@@ -34,7 +34,7 @@ app.post('/makequiz', authenticateToken, async (req, res) => {
     }
 });
 
-app.delete("/deletequiz", authenticateToken, async (req, res) => {
+app.delete("/quiz", authenticateToken, async (req, res) => {
     try {
         const user = decodeUser(req);
 

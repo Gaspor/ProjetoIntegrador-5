@@ -4,7 +4,7 @@ const { query } = require("./../../config/connection");
 const { authenticateToken } = require("./../../middleware/auth");
 const { decodeUser } = require("./../../config/decodeJWT");
 
-app.get("/alternativa", authenticateToken, async (req, res) => {
+app.put("/alternativa", authenticateToken, async (req, res) => {
     try {
         const alternativas = await query("SELECT * FROM alternativa WHERE idquestao=$1", [req.body.idquestao]);
 

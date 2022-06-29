@@ -25,8 +25,8 @@ app.post("/questao", authenticateToken, async (req, res) => {
 
         }
 
-        await query("INSERT INTO questao(idquestionario, enunciado, createdat, updatedat) VALUES($1, $2, now(), now())", [req.body.idquestionario, req.body.enunciado]);
-        return res.json({ error: false, message: "Questão inserida com sucesso" });
+        const idQuestao = await query("INSERT INTO questao(idquestionario, enunciado, createdat, updatedat) VALUES($1, $2, now(), now()) RETURNING id", [req.body.idquestionario, req.body.enunciado]);
+        return res.json({ error: false, message: "Questão inserida com sucesso", idQuestao: idQuestao });
 
     } catch (error) {
         return res.status(500).json({ error: true, message: error.message });
@@ -89,8 +89,7 @@ async function countAlternativas(element, corretas) {
     }
 
     return corretas;
-    
-}
 
+}
 
 module.exports = app;

@@ -25,8 +25,8 @@ app.post('/quiz', authenticateToken, async (req, res) => {
 
         }
 
-        await query("INSERT INTO questionario(professor, titulo, status, createdat, updatedat) VALUES($1, $2, $3, now(), now())", [user.id, req.body.titulo, "Criado"])
-        return res.json({ error: false, message: "Criado um questionário para o professor/a com o titulo " + req.body.titulo });
+        const idQuestionario = await query("INSERT INTO questionario(professor, titulo, status, createdat, updatedat) VALUES($1, $2, $3, now(), now()) RETURNING id", [user.id, req.body.titulo, "Criado"])
+        return res.json({ error: false, message: "Criado um questionário para o professor/a com o titulo " + req.body.titulo, idQuestionario: idQuestionario });
 
     } catch (error) {
         return res.status(500).json({ error: true, message: error.message });

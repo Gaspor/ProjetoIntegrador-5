@@ -32,8 +32,9 @@
           "refreshToken": ""
         }
 
+
   ### Refresh_token
-    get /refresh_token
+    put /refresh_token
       Request: cookies.refresh_token
 
       Response: 
@@ -51,7 +52,7 @@
 
 ## /quiz
   ### Quiz
-    get /quiz
+    put /quiz
       Request:
         {
           "idprofessor": ""
@@ -89,7 +90,7 @@
         }
 
   ### Questao
-    get /questao
+    put /questao
       Request: 
         {
           "idquestionario": ""
@@ -128,9 +129,22 @@
           "error": false,
           message: "Questão respondida com sucesso"
         }
+      
+      delete /questao
+        Request: 
+          {
+            "idquestao": "",
+            "idquestionario": ""
+          }
+
+        Response:
+          {
+            "error": false,
+            "message": "Questão deletada"
+          }
 
   ### Alternativa
-    get /alternativa
+    put /alternativa
       Request:
         {
           "idquestao": ""

@@ -9,7 +9,7 @@ app.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const newUser = await query(
             "INSERT INTO account(username, password, email, createdat, updatedat) VALUES ($1, $2, $3, now(), now()) RETURNING *",
-            [req.body.username, hashedPassword, req.body.email]
+            [req.body.username, hashedPassword, req.body.email.toLowerCase()]
         );
 
         const cargo = req.body.cargo;

@@ -34,8 +34,8 @@ app.post("/alternativa", authenticateToken, async (req, res) => {
                     await query("INSERT INTO alternativa(idquestao, texto, correta) VALUES($1, $2, $3)", [req.body.idquestao, alternativas[i].texto, alternativas[i].correta]);
     
                 }
-                
             }
+            
             return res.json({ error: false, message: "Alternativas dessa questão foram adicionadas", alternativas: alternativas });
 
         }

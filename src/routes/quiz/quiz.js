@@ -4,7 +4,7 @@ const { query } = require("./../../config/connection");
 const { authenticateToken } = require("./../../middleware/auth");
 const { decodeUser } = require("./../../config/decodeJWT");
 
-app.get("/getquiz", authenticateToken, async (req, res) => {
+app.put("/quiz", authenticateToken, async (req, res) => {
     try {
         const questionarios = await query("SELECT id, titulo, status FROM questionario WHERE professor=$1", [req.body.idprofessor]);
 
@@ -16,7 +16,7 @@ app.get("/getquiz", authenticateToken, async (req, res) => {
     }
 });
 
-app.post('/makequiz', authenticateToken, async (req, res) => {
+app.post('/quiz', authenticateToken, async (req, res) => {
     try {
         const user = decodeUser(req);
 
@@ -25,8 +25,8 @@ app.post('/makequiz', authenticateToken, async (req, res) => {
 
         }
 
-        await query("INSERT INTO questionario(professor, titulo, status, createdat, updatedat) VALUES($1, $2, $3, now(), now())", [user.id, req.body.titulo, "Criado"])
-        return res.json({ error: false, message: "Criado um questionário para o professor/a com o titulo " + req.body.titulo });
+        const idQuestionario = await query("INSERT INTO questionario(professor, titulo, status, createdat, updatedat) VALUES($1, $2, $3, now(), now()) RETURNING id", [user.id, req.body.titulo, "Criado"])
+        return res.json({ error: false, message: "Criado um questionário para o professor/a com o titulo " + req.body.titulo, idQuestionario: idQuestionario });
 
     } catch (error) {
         return res.status(500).json({ error: true, message: error.message });
@@ -34,7 +34,7 @@ app.post('/makequiz', authenticateToken, async (req, res) => {
     }
 });
 
-app.delete("/deletequiz", authenticateToken, async (req, res) => {
+app.delete("/quiz", authenticateToken, async (req, res) => {
     try {
         const user = decodeUser(req);
 

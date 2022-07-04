@@ -3,7 +3,7 @@ const app = express();
 const { jwtTokens } = require("./../../config/jwt");
 const jwt = require("jsonwebtoken");
 
-app.get('/refresh_token', async (req, res) => {
+app.put('/refresh_token', async (req, res) => {
     try {
         const refresh_token = req.cookies.refresh_token;
         

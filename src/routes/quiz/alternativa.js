@@ -35,7 +35,7 @@ app.post("/alternativa", authenticateToken, async (req, res) => {
     
                 }
             }
-            
+
             return res.json({ error: false, message: "Alternativas dessa questão foram adicionadas", alternativas: alternativas });
 
         }

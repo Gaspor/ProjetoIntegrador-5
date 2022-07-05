@@ -4,18 +4,17 @@ const { query } = require("./../../config/connection");
 const { authenticateToken } = require("./../../middleware/auth");
 const { decodeUser } = require("./../../config/decodeJWT");
 
-app.post("grupo", authenticateToken, async (req, res) => {
+app.post("/grupo", authenticateToken, async (req, res) => {
     try {
         const user = decodeUser(req);
 
         if (user.cargo == "Aluno") {
-            return res.json({ error: true, message: "Usuário não pode criar grupos" });
+            return res.json({ error: true, message: "Aluno não pode criar grupos" });
 
         }
 
-        /* TODO: Tratar erros */
-        await query("INSERT INTO grupo(nome, turmaid, createdat, updatedat) VALUES($1, $2, now(), now())", [req.body.nome, req.body.turmaid]);
-        return res.json({ error: false, message: "Grupo criado com sucesso!" });
+        const grupo = await query("INSERT INTO grupo(nome, turmaid, createdat, updatedat) VALUES($1, $2, now(), now()) RETURNING id", [req.body.nome, req.body.turmaid]);
+        return res.json({ error: false, message: "Grupo criado com sucesso!", grupoid: grupo.rows[0].id });
 
     } catch (error) {
         res.status(500).json({ error: true, message: error.message });
@@ -23,7 +22,7 @@ app.post("grupo", authenticateToken, async (req, res) => {
     }
 });
 
-app.post("addaluno", authenticateToken, async (req, res) => {
+app.post("/addaluno", authenticateToken, async (req, res) => {
     try {
         const user = decodeUser(req);
 
@@ -31,8 +30,7 @@ app.post("addaluno", authenticateToken, async (req, res) => {
             return res.json({ error: true, message: "Usuário não pode adicionar pessoas grupos" });
 
         }
-
-        /* TODO: Tratar erros */
+        
         await query("INSERT INTO grupo_aluno(idaluno, idgrupo, createdat, updatedat) VALUES($1, $2, now(), now())", [req.body.idaluno, req.body.idgrupo]);
         return res.json({ error: false, message: "Aluno adicionado com sucesso!" });
 

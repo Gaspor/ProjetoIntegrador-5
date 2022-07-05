@@ -13,8 +13,15 @@
 
       Response: 
         {
-          "accessToken": "",
-          "refreshToken": ""
+          "error": false,
+          "tokens": {
+              "accessToken": "",
+              "refreshToken": ""
+          },
+          "user": {
+              "cargo": "",
+              "id": ""
+          }
         }
 
   ### Register
@@ -28,8 +35,17 @@
 
       Response: 
         {
-          "accessToken": "",
-          "refreshToken": ""
+          "error": false,
+          "tokens": {
+              "accessToken": "",
+              "refreshToken": ""
+          },
+          "user": {
+              "id": ,
+              "username": "",
+              "email": "",
+              "cargo": ""
+          }
         }
 
 
@@ -195,6 +211,69 @@
               "correta": true
             }
           ]
+        }
+
+## /grupo
+  ### Grupo
+    post /grupo
+      Request: 
+        {
+          "nome": "",
+          "turmaid": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Grupo criado com sucesso!",
+          "grupoid": "ID DO GRUPO"
+        }
+
+    post /addaluno
+      Request: 
+        {
+          "idaluno": "",
+          "idgrupo": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Aluno adicionado com sucesso!"
+        }
+
+## /turma
+  ### Turma
+    post /turma
+      Request: 
+        {
+          "escola": "",
+          "grau": "",
+          "periodo": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Turma criada com sucesso!",
+          "turmaid": "ID DA TURMA"
+        }
+
+    post /addaluno
+      Request: 
+        {
+          "idaluno": "",
+          "idturma": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Aluno adicionado com sucesso!"
         }
 
 # Tecnologias Utilizadas

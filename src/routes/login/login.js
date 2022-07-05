@@ -36,7 +36,7 @@ app.post('/login', async (req, res) => {
 
         const tokens = jwtTokens(userData);
         res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
-        res.status(200).json({ error: false, tokens: tokens, user: { cargo: userData.cargo }});
+        res.status(200).json({ error: false, tokens: tokens, user: { cargo: userData.cargo, id: userData.id }});
 
     } catch (error) {
         res.status(500).json({ error: true, message: error.message });

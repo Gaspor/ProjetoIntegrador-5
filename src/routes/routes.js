@@ -12,4 +12,10 @@ apiRouter.use('/quiz', require("./quiz/quiz"));
 apiRouter.use('/quiz', require("./quiz/questao"));
 apiRouter.use('/quiz', require("./quiz/alternativa"));
 
+/* Turma routes*/
+apiRouter.use("/turma", require("./turma/turma"));
+
+/* Grupo routes*/
+apiRouter.use("/grupo", require("./grupo/grupo"));
+
 module.exports = apiRouter;

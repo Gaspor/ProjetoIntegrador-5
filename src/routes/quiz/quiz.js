@@ -6,7 +6,9 @@ const { decodeUser } = require("./../../config/decodeJWT");
 
 app.put("/quiz", authenticateToken, async (req, res) => {
     try {
-        const questionarios = await query("SELECT id, titulo, status FROM questionario WHERE professor=$1", [req.body.idprofessor]);
+        const user = decodeUser(req);
+        userid = req.body.idprofessor? req.body.idprofessor : user.id;
+        const questionarios = await query("SELECT id, titulo, status FROM questionario WHERE professor=$1", [userid]);
 
         return res.json({ error: false, message: "Todos os questionários desse professor", questionarios: questionarios.rows });
 

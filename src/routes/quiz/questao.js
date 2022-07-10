@@ -78,6 +78,27 @@ app.get("/acertos", authenticateToken, async (req, res) => {
     }
 });
 
+app.delete("/questao", authenticateToken, async (req, res) => {
+    try {
+        const user = decodeUser(req);
+        if (user.cargo == "Professor") {
+            const questao = await query("DELETE FROM questao WHERE id=$1 AND idquestionario=$2", [req.body.idquestao, req.body.idquestionario]);
+            if (questao.rowCount > 0) {
+                return res.json({ error: false, message: "Questão deletada" });
+
+            }
+
+            return res.json({ error: true, message: "Não existe questão com este id" });
+            
+        }
+        return res.json({ error: true, message: "Aluno não pode deletar questão" });
+
+    } catch (error) {
+        return res.status(500).json({ error: true, message: error.message });
+
+    }
+});
+
 async function countAlternativas(element, corretas) {
     const alternativa = await query("SELECT correta FROM alternativa WHERE idalternativa=$1", [element.idalternativa]);
     for (let index = 0; index < alternativa.rowCount; index++) {

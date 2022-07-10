@@ -13,8 +13,15 @@
 
       Response: 
         {
-          "accessToken": "",
-          "refreshToken": ""
+          "error": false,
+          "tokens": {
+              "accessToken": "",
+              "refreshToken": ""
+          },
+          "user": {
+              "cargo": "",
+              "id": ""
+          }
         }
 
   ### Register
@@ -28,12 +35,22 @@
 
       Response: 
         {
-          "accessToken": "",
-          "refreshToken": ""
+          "error": false,
+          "tokens": {
+              "accessToken": "",
+              "refreshToken": ""
+          },
+          "user": {
+              "id": ,
+              "username": "",
+              "email": "",
+              "cargo": ""
+          }
         }
 
+
   ### Refresh_token
-    get /refresh_token
+    put /refresh_token
       Request: cookies.refresh_token
 
       Response: 
@@ -51,7 +68,7 @@
 
 ## /quiz
   ### Quiz
-    get /quiz
+    put /quiz
       Request:
         {
           "idprofessor": ""
@@ -89,7 +106,7 @@
         }
 
   ### Questao
-    get /questao
+    put /questao
       Request: 
         {
           "idquestionario": ""
@@ -128,9 +145,22 @@
           "error": false,
           message: "Questão respondida com sucesso"
         }
+      
+      delete /questao
+        Request: 
+          {
+            "idquestao": "",
+            "idquestionario": ""
+          }
+
+        Response:
+          {
+            "error": false,
+            "message": "Questão deletada"
+          }
 
   ### Alternativa
-    get /alternativa
+    put /alternativa
       Request:
         {
           "idquestao": ""
@@ -181,6 +211,69 @@
               "correta": true
             }
           ]
+        }
+
+## /grupo
+  ### Grupo
+    post /grupo
+      Request: 
+        {
+          "nome": "",
+          "turmaid": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Grupo criado com sucesso!",
+          "grupoid": "ID DO GRUPO"
+        }
+
+    post /addaluno
+      Request: 
+        {
+          "idaluno": "",
+          "idgrupo": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Aluno adicionado com sucesso!"
+        }
+
+## /turma
+  ### Turma
+    post /turma
+      Request: 
+        {
+          "escola": "",
+          "grau": "",
+          "periodo": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Turma criada com sucesso!",
+          "turmaid": "ID DA TURMA"
+        }
+
+    post /addaluno
+      Request: 
+        {
+          "idaluno": "",
+          "idturma": ""
+          
+        }
+
+      Response: 
+        {
+          "error": false,
+          "message": "Aluno adicionado com sucesso!"
         }
 
 # Tecnologias Utilizadas

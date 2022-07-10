@@ -9,7 +9,7 @@ app.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const newUser = await query(
             "INSERT INTO account(username, password, email, createdat, updatedat) VALUES ($1, $2, $3, now(), now()) RETURNING *",
-            [req.body.username, hashedPassword, req.body.email]
+            [req.body.username, hashedPassword, req.body.email.toLowerCase()]
         );
 
         const cargo = req.body.cargo;
@@ -23,7 +23,7 @@ app.post('/register', async (req, res) => {
 
         }
         
-        return res.status(201).json(jwtTokens(newUser.rows[0]));
+        return res.status(201).json({ error: false, tokens: jwtTokens(newUser.rows[0]), user: { id: newUser.rows[0].id, username: newUser.rows[0].username, email: newUser.rows[0].email, cargo: cargo }});
 
     } catch (error) {
         return res.status(500).json({ error: true, message: error.message });
